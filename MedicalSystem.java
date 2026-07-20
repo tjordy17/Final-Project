@@ -1,55 +1,136 @@
+import java.util.ArrayList;
+
 public class MedicalSystem {
 
-    // Patient
+    // Collections to store application data
+    private ArrayList<Patient> patients;
+    private ArrayList<Appointment> appointments;
+    private ArrayList<MedicalRecord> medicalRecords;
 
-    public boolean registerPatient(Patient patient);
+    /**
+     * Constructor
+     */
+    public MedicalSystem() {
+        patients = new ArrayList<>();
+        appointments = new ArrayList<>();
+        medicalRecords = new ArrayList<>();
+    }
 
-    public Patient searchPatientByID(int id);
+    /* =====================================================
+                      PATIENT MANAGEMENT
+       ===================================================== */
 
-    public ArrayList<Patient> searchPatientByName(String name);
+    public boolean registerPatient(Patient patient) {
+        // TODO: Implement after Patient.java is merged
+        return false;
+    }
 
-    public boolean updatePatient(int id, Patient updatedPatient);
+    public Patient searchPatientByID(int patientId) {
+        // TODO: Implement after Patient.java is merged
+        return null;
+    }
 
-    public boolean deletePatient(int id);
+    public ArrayList<Patient> searchPatientByName(String name) {
+        // TODO: Implement after Patient.java is merged
+        return new ArrayList<>();
+    }
 
+    public boolean updatePatient(int patientId, Patient updatedPatient) {
+        // TODO: Implement after Patient.java is merged
+        return false;
+    }
 
+    public boolean deletePatient(int patientId) {
+        // TODO: Implement after Patient.java is merged
+        return false;
+    }
 
-    // Medical Records
+    /* =====================================================
+                   APPOINTMENT MANAGEMENT
+       ===================================================== */
 
-    public boolean addMedicalRecord(int patientId, MedicalRecord record);
+    public boolean scheduleAppointment(Appointment appointment) {
+        // TODO: Implement after Appointment.java is merged
+        return false;
+    }
 
-    public ArrayList<MedicalRecord> getMedicalRecords(int patientId);
+    public boolean updateAppointment(int appointmentId,
+                                     Appointment updatedAppointment) {
+        // TODO: Implement after Appointment.java is merged
+        return false;
+    }
 
-    public boolean updateMedicalRecord(int patientId, MedicalRecord record);
+    public boolean cancelAppointment(int appointmentId) {
+        // TODO: Implement after Appointment.java is merged
+        return false;
+    }
 
+    public ArrayList<Appointment> getAppointments(int patientId) {
+        // TODO: Implement after Appointment.java is merged
+        return new ArrayList<>();
+    }
 
+    /* =====================================================
+                  MEDICAL RECORD MANAGEMENT
+       ===================================================== */
 
-    // Appointments
+    public boolean addMedicalRecord(MedicalRecord record) {
+        // TODO: Implement after MedicalRecord.java is merged
+        return false;
+    }
 
-    public boolean scheduleAppointment(Appointment appointment);
+    public ArrayList<MedicalRecord> getMedicalRecords(int patientId) {
+        // TODO: Implement after MedicalRecord.java is merged
+        return new ArrayList<>();
+    }
 
-    public boolean updateAppointment(int appointmentId,Appointment updatedAppointment);
+    public boolean updateMedicalRecord(int patientId,
+                                       MedicalRecord updatedRecord) {
+        // TODO: Implement after MedicalRecord.java is merged
+        return false;
+    }
 
-    public boolean cancelAppointment(int appointmentId);
+    /* =====================================================
+                        REPORTS
+       ===================================================== */
 
-    public ArrayList<Appointment> getAppointments(int patientId);
+    public void generatePatientReport() {
+        // TODO: Implement after all modules are integrated
+    }
 
+    public void generateAppointmentReport() {
+        // TODO: Implement after all modules are integrated
+    }
 
+    public void generateMedicalHistoryReport() {
+        // TODO: Implement after all modules are integrated
+    }
 
-    // Reports
+    /* =====================================================
+                     DATA PERSISTENCE
+       ===================================================== */
 
-    public void generatePatientReport();
+    public void saveData() {
+        // TODO: Save all collections to text files
+    }
 
-    public void generateAppointmentReport();
+    public void loadData() {
+        // TODO: Load all collections from text files
+    }
 
-    public void generateMedicalHistoryReport();
+    /* =====================================================
+                     GETTERS (Optional)
+       ===================================================== */
 
+    public ArrayList<Patient> getPatients() {
+        return patients;
+    }
 
+    public ArrayList<Appointment> getAppointments() {
+        return appointments;
+    }
 
-    // Persistence
-
-    public void loadData();
-
-    public void saveData();
-
+    public ArrayList<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
+    }
 }

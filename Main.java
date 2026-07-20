@@ -2,12 +2,14 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // Create the system that manages all application data
         MedicalSystem medicalSystem = new MedicalSystem();
 
-        MedicalInterface ui = new MedicalInterface(medicalSystem);
+        // Create the command-line interface
+        MedicalInterface medicalInterface = new MedicalInterface(medicalSystem);
 
-        ui.start();
+        // Start the application
+        medicalInterface.start();
 
     }
-
 }

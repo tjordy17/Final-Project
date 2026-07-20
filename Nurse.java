@@ -1,8 +1,8 @@
 public class Nurse extends User {
 
-    public Nurse(int id,String name);
+    public Nurse(int userId, String name) {
+        super(userId, name, "Nurse");
 
-    @Override
-    public void displayMenu();
-
+      
+    }
 }
