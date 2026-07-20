@@ -1,17 +1,41 @@
+import java.util.Scanner;
+
 public class MedicalInterface {
 
-    public void start();
+    private MedicalSystem medicalSystem;
+    private Scanner scanner;
 
-    private void displayMainMenu();
+    public MedicalInterface(MedicalSystem medicalSystem) {
+        this.medicalSystem = medicalSystem;
+        this.scanner = new Scanner(System.in);
+    }
 
-    private void patientMenu();
+    public void start() {
+        // Main application loop
+    }
 
-    private void appointmentMenu();
+    private void displayMainMenu() {
+        // Display menu options
+    }
 
-    private void medicalRecordMenu();
+    private void patientMenu() {
+        // Patient-related options
+    }
 
-    private void reportMenu();
+    private void appointmentMenu() {
+        // Appointment-related options
+    }
 
-    private int getChoice();
+    private void medicalRecordMenu() {
+        // Medical record options
+    }
 
+    private void reportMenu() {
+        // Report options
+    }
+
+    private int getChoice() {
+        // Read user input
+        return 0;
+    }
 }
