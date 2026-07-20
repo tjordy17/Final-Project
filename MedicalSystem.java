@@ -1,55 +1,31 @@
 public class MedicalSystem {
 
-    // Patient
+    public MedicalSystem() {
 
-    public boolean registerPatient(Patient patient);
+    }
 
-    public Patient searchPatientByID(int id);
+    public boolean registerPatient(Patient patient) {
 
-    public ArrayList<Patient> searchPatientByName(String name);
+        return false;
 
-    public boolean updatePatient(int id, Patient updatedPatient);
+    }
 
-    public boolean deletePatient(int id);
+    public Patient searchPatientByID(int id) {
 
+        return null;
 
+    }
 
-    // Medical Records
+    public boolean scheduleAppointment(Appointment appointment) {
 
-    public boolean addMedicalRecord(int patientId, MedicalRecord record);
+        return false;
 
-    public ArrayList<MedicalRecord> getMedicalRecords(int patientId);
+    }
 
-    public boolean updateMedicalRecord(int patientId, MedicalRecord record);
+    public boolean addMedicalRecord(MedicalRecord record) {
 
+        return false;
 
-
-    // Appointments
-
-    public boolean scheduleAppointment(Appointment appointment);
-
-    public boolean updateAppointment(int appointmentId,Appointment updatedAppointment);
-
-    public boolean cancelAppointment(int appointmentId);
-
-    public ArrayList<Appointment> getAppointments(int patientId);
-
-
-
-    // Reports
-
-    public void generatePatientReport();
-
-    public void generateAppointmentReport();
-
-    public void generateMedicalHistoryReport();
-
-
-
-    // Persistence
-
-    public void loadData();
-
-    public void saveData();
+    }
 
 }

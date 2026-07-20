@@ -1,19 +1,45 @@
 public abstract class User {
 
-    protected int userID;
+    private int userId;
+    private String name;
+    private String role;
 
-    protected String name;
+    public User(int userId, String name, String role) {
+        this.userId = userId;
+        this.name = name;
+        this.role = role;
+    }
 
-    protected String role;
+    public int getUserId() {
+        return userId;
+    }
 
-    public User(int id,String name);
+    public String getName() {
+        return name;
+    }
 
-    public int getUserID();
+    public String getRole() {
+        return role;
+    }
 
-    public String getName();
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getRole();
+    protected void setRole(String role) {
+        this.role = role;
+    }
 
-    public abstract void displayMenu();
+    public void displayUserInfo() {
+        System.out.println("User ID : " + userId);
+        System.out.println("Name    : " + name);
+        System.out.println("Role    : " + role);
+    }
 
+    @Override
+    public String toString() {
+        return "User ID: " + userId +
+               ", Name: " + name +
+               ", Role: " + role;
+    }
 }
