@@ -1,19 +1,20 @@
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class MedicalSystem {
 
+    private int intergerTracker = 0;
+
     // Collections to store application data
-    private ArrayList<Patient> patients;
+    private Hashtable<Integer, Patient> patients;
     private ArrayList<Appointment> appointments;
-    private ArrayList<MedicalRecord> medicalRecords;
 
     /**
      * Constructor
      */
     public MedicalSystem() {
-        patients = new ArrayList<>();
+        patients = new Hashtable<Integer, Patient>();
         appointments = new ArrayList<>();
-        medicalRecords = new ArrayList<>();
     }
 
     /* =====================================================
@@ -122,7 +123,7 @@ public class MedicalSystem {
                      GETTERS (Optional)
        ===================================================== */
 
-    public ArrayList<Patient> getPatients() {
+    public Hashtable<Integer,Patient> getPatients() {
         return patients;
     }
 
@@ -130,7 +131,4 @@ public class MedicalSystem {
         return appointments;
     }
 
-    public ArrayList<MedicalRecord> getMedicalRecords() {
-        return medicalRecords;
-    }
 }
