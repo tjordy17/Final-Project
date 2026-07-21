@@ -1,23 +1,23 @@
 public class Appointment {
 
-    public Appointment(int appointmentID,int patientID,String doctor,String date,String time);
+    public Appointment(int appointmentID,int patientID,String doctor,String date,String time){}
 
-    public int getAppointmentID();
+    public int getAppointmentID(){}
 
-    public int getPatientID();
+    public int getPatientID(){}
 
-    public String getDoctor();
+    public String getDoctor(){}
 
-    public String getDate();
+    public String getDate(){}
 
-    public String getTime();
+    public String getTime(){}
 
-    public void setDoctor(String doctor);
+    public void setDoctor(String doctor){}
 
-    public void setDate(String date);
+    public void setDate(String date){}
 
-    public void setTime(String time);
+    public void setTime(String time){}
 
-    public String toString();
+    public String toString(){}
 
 }
