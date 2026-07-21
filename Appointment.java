@@ -1,23 +1,58 @@
 public class Appointment {
 
-    public Appointment(int appointmentID,int patientID,String doctor,String date,String time);
+    private int appointmentID;     // stores the appointment id
+    private int patientID;         // stores the patient id
+    private String doctor;         // stores the doctor name
+    private String date;           // stores the appointment date
+    private String time;           // stores the appointment time
 
-    public int getAppointmentID();
+    public Appointment(int appointmentID, int patientID, String doctor,
+                       String date, String time) {
+        this.appointmentID = appointmentID;   // sets the appointment id
+        this.patientID = patientID;           // sets the patient id
+        this.doctor = doctor;                 // sets the doctor name
+        this.date = date;                     // sets the date
+        this.time = time;                     // sets the time
+    }
 
-    public int getPatientID();
+    public int getAppointmentID() {
+        return appointmentID;
+    }
 
-    public String getDoctor();
+    public int getPatientID() {
+        return patientID;
+    }
 
-    public String getDate();
+    public String getDoctor() {
+        return doctor;
+    }
 
-    public String getTime();
+    public String getDate() {
+        return date;
+    }
 
-    public void setDoctor(String doctor);
+    public String getTime() {
+        return time;
+    }
 
-    public void setDate(String date);
+    public void setDoctor(String doctor) {
+        this.doctor = doctor;
+    }
 
-    public void setTime(String time);
+    public void setDate(String date) {
+        this.date = date;
+    }
 
-    public String toString();
+    public void setTime(String time) {
+        this.time = time;
+    }
 
+    @Override
+    public String toString() {
+        return "Appointment ID: " + appointmentID
+                + ", Patient ID: " + patientID
+                + ", Doctor: " + doctor
+                + ", Date: " + date
+                + ", Time: " + time;
+    }
 }
