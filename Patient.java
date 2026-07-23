@@ -21,6 +21,7 @@ public class Patient {
         this.Id = id;
         this.first_name = firstName;
         this.last_name = lastName;
+        this.date_of_birth = date_of_birth;
         this.age = age;
         this.gender = gender;
         this.phone_number = phone;

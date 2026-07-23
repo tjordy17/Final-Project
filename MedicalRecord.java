@@ -1,15 +1,25 @@
 public class MedicalRecord {
 
+    private int patientID;
     private String diagnosis;
     private String treatment;
     private String medication;
     private String notes;
 
-    public MedicalRecord(String diagnosis,String treatment,String medication,String notes){
+    public MedicalRecord(int patientID, String diagnosis, String treatment, String medication, String notes) {
+        this.patientID = patientID;
         this.diagnosis = diagnosis;
         this.treatment = treatment;
         this.medication = medication;
         this.notes = notes;
+    }
+
+    public int getPatientID() {
+        return patientID;
+    }
+
+    public void setPatientID(int patientID) {
+        this.patientID = patientID;
     }
 
     public String getDiagnosis(){
@@ -45,7 +55,7 @@ public class MedicalRecord {
     }
 
     public String toString(){
-        return String.format("{%s,%s,%s,%s}",diagnosis, treatment, medication, notes);
+        return String.format("{%d,%s,%s,%s,%s}", patientID, diagnosis, treatment, medication, notes);
     }
 
 }

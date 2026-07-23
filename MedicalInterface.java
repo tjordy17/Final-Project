@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MedicalInterface {
@@ -43,12 +44,12 @@ public class MedicalInterface {
 
                 case 5:
                     System.out.println("\nSaving data...");
-                    // medicalSystem.saveData();
+                    medicalSystem.saveData();
                     break;
 
                 case 6:
                     System.out.println("\nLoading data...");
-                    // medicalSystem.loadData();
+                    medicalSystem.loadData();
                     break;
 
                 case 7:
@@ -93,16 +94,15 @@ public class MedicalInterface {
         switch (choice) {
 
             case 1:
-                System.out.println("Register Patient (TODO)");
-                // medicalSystem.registerPatient(...);
+                registerPatient();
                 break;
 
             case 2:
-                System.out.println("Search Patient (TODO)");
+                searchPatient();
                 break;
 
             case 3:
-                System.out.println("Update Patient (TODO)");
+                updatePatient();
                 break;
 
             case 4:
@@ -127,15 +127,15 @@ public class MedicalInterface {
         switch (choice) {
 
             case 1:
-                System.out.println("Schedule Appointment (TODO)");
+                scheduleAppointment();
                 break;
 
             case 2:
-                System.out.println("Update Appointment (TODO)");
+                updateAppointment();
                 break;
 
             case 3:
-                System.out.println("Cancel Appointment (TODO)");
+                cancelAppointment();
                 break;
 
             case 4:
@@ -160,15 +160,15 @@ public class MedicalInterface {
         switch (choice) {
 
             case 1:
-                System.out.println("Add Medical Record (TODO)");
+                addMedicalRecord();
                 break;
 
             case 2:
-                System.out.println("View Medical Record (TODO)");
+                viewMedicalRecords();
                 break;
 
             case 3:
-                System.out.println("Update Medical Record (TODO)");
+                updateMedicalRecord();
                 break;
 
             case 4:
@@ -193,15 +193,15 @@ public class MedicalInterface {
         switch (choice) {
 
             case 1:
-                System.out.println("Patient Report (TODO)");
+                medicalSystem.generatePatientReport();
                 break;
 
             case 2:
-                System.out.println("Appointment Report (TODO)");
+                medicalSystem.generateAppointmentReport();
                 break;
 
             case 3:
-                System.out.println("Medical History Report (TODO)");
+                medicalSystem.generateMedicalHistoryReport();
                 break;
 
             case 4:
@@ -209,6 +209,186 @@ public class MedicalInterface {
 
             default:
                 System.out.println("Invalid option.");
+        }
+    }
+
+    private void registerPatient() {
+        int patientId = readInt("Patient ID: ");
+        String firstName = readRequiredText("First name: ");
+        String lastName = readRequiredText("Last name: ");
+        String dateOfBirth = readRequiredText("Date of birth: ");
+        int age = readInt("Age: ");
+        String gender = readRequiredText("Gender: ");
+        String phone = readRequiredText("Phone: ");
+
+        Patient patient = new Patient(patientId, firstName, lastName, dateOfBirth, age, gender, phone);
+
+        if (medicalSystem.registerPatient(patient)) {
+            System.out.println("Patient registered successfully.");
+        } else {
+            System.out.println("Patient registration failed. ID may already exist.");
+        }
+    }
+
+    private void searchPatient() {
+        System.out.println("1. Search by ID");
+        System.out.println("2. Search by name");
+        int searchChoice = getChoice();
+
+        if (searchChoice == 1) {
+            int patientId = readInt("Patient ID: ");
+            Patient patient = medicalSystem.searchPatientByID(patientId);
+
+            if (patient == null) {
+                System.out.println("Patient not found.");
+            } else {
+                System.out.println(patient);
+            }
+        } else if (searchChoice == 2) {
+            String name = readRequiredText("Enter name fragment: ");
+            ArrayList<Patient> patients = medicalSystem.searchPatientByName(name);
+
+            if (patients.isEmpty()) {
+                System.out.println("No matching patients found.");
+            } else {
+                for (Patient patient : patients) {
+                    System.out.println(patient);
+                }
+            }
+        } else {
+            System.out.println("Invalid option.");
+        }
+    }
+
+    private void updatePatient() {
+        int patientId = readInt("Patient ID to update: ");
+        Patient existingPatient = medicalSystem.searchPatientByID(patientId);
+
+        if (existingPatient == null) {
+            System.out.println("Patient not found.");
+            return;
+        }
+
+        String firstName = readRequiredText("New first name (leave blank to keep current): ");
+        String lastName = readRequiredText("New last name (leave blank to keep current): ");
+        int age = readInt("New age (enter 0 to keep current): ");
+        String gender = readRequiredText("New gender (leave blank to keep current): ");
+        String phone = readRequiredText("New phone (leave blank to keep current): ");
+
+        if (!firstName.isEmpty()) {
+            existingPatient.setFirstName(firstName);
+        }
+        if (!lastName.isEmpty()) {
+            existingPatient.setLastName(lastName);
+        }
+        if (age != 0) {
+            existingPatient.setAge(age);
+        }
+        if (!gender.isEmpty()) {
+            existingPatient.setGender(gender);
+        }
+        if (!phone.isEmpty()) {
+            existingPatient.setPhone(phone);
+        }
+
+        if (medicalSystem.updatePatient(patientId, existingPatient)) {
+            System.out.println("Patient updated successfully.");
+        } else {
+            System.out.println("Patient update failed.");
+        }
+    }
+
+    private void scheduleAppointment() {
+        int appointmentId = readInt("Appointment ID: ");
+        int patientId = readInt("Patient ID: ");
+        String doctor = readRequiredText("Doctor: ");
+        String date = readRequiredText("Date: ");
+        String time = readRequiredText("Time: ");
+
+        Appointment appointment = new Appointment(appointmentId, patientId, doctor, date, time);
+
+        if (medicalSystem.scheduleAppointment(appointment)) {
+            System.out.println("Appointment scheduled successfully.");
+        } else {
+            System.out.println("Appointment scheduling failed. Check patient ID or duplicate appointment ID.");
+        }
+    }
+
+    private void updateAppointment() {
+        int appointmentId = readInt("Appointment ID to update: ");
+        String doctor = readRequiredText("New doctor (leave blank to keep current): ");
+        String date = readRequiredText("New date (leave blank to keep current): ");
+        String time = readRequiredText("New time (leave blank to keep current): ");
+
+        Appointment updatedAppointment = new Appointment(appointmentId, -1, doctor, date, time);
+
+        if (medicalSystem.updateAppointment(appointmentId, updatedAppointment)) {
+            System.out.println("Appointment updated successfully.");
+        } else {
+            System.out.println("Appointment update failed.");
+        }
+    }
+
+    private void cancelAppointment() {
+        int appointmentId = readInt("Appointment ID to cancel: ");
+
+        if (medicalSystem.cancelAppointment(appointmentId)) {
+            System.out.println("Appointment cancelled successfully.");
+        } else {
+            System.out.println("Appointment not found.");
+        }
+    }
+
+    private void addMedicalRecord() {
+        int patientId = readInt("Patient ID: ");
+        String diagnosis = readRequiredText("Diagnosis: ");
+        String treatment = readRequiredText("Treatment: ");
+        String medication = readRequiredText("Medication: ");
+        String notes = readRequiredText("Notes: ");
+
+        MedicalRecord record = new MedicalRecord(patientId, diagnosis, treatment, medication, notes);
+
+        if (medicalSystem.addMedicalRecord(record)) {
+            System.out.println("Medical record added successfully.");
+        } else {
+            System.out.println("Medical record could not be added. Check the patient ID.");
+        }
+    }
+
+    private void viewMedicalRecords() {
+        int patientId = readInt("Patient ID: ");
+        ArrayList<MedicalRecord> records = medicalSystem.getMedicalRecords(patientId);
+
+        if (records.isEmpty()) {
+            System.out.println("No medical records found for this patient.");
+            return;
+        }
+
+        for (MedicalRecord record : records) {
+            System.out.println(record);
+        }
+    }
+
+    private void updateMedicalRecord() {
+        int patientId = readInt("Patient ID: ");
+        ArrayList<MedicalRecord> records = medicalSystem.getMedicalRecords(patientId);
+
+        if (records.isEmpty()) {
+            System.out.println("No medical records found for this patient.");
+            return;
+        }
+
+        String diagnosis = readRequiredText("New diagnosis: ");
+        String treatment = readRequiredText("New treatment: ");
+        String medication = readRequiredText("New medication: ");
+        String notes = readRequiredText("New notes: ");
+
+        MedicalRecord updatedRecord = new MedicalRecord(patientId, diagnosis, treatment, medication, notes);
+
+        if (medicalSystem.updateMedicalRecord(patientId, updatedRecord)) {
+            System.out.println("Medical record updated successfully.");
+        } else {
+            System.out.println("Medical record update failed.");
         }
     }
 
@@ -227,6 +407,30 @@ public class MedicalInterface {
                 System.out.println("Please enter a valid number.");
 
             }
+        }
+    }
+
+    private int readInt(String prompt) {
+        while (true) {
+            try {
+                System.out.print(prompt);
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
+    private String readRequiredText(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String value = scanner.nextLine().trim();
+
+            if (!value.isEmpty()) {
+                return value;
+            }
+
+            System.out.println("This field cannot be empty.");
         }
     }
 }
