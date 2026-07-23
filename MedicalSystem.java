@@ -3,6 +3,7 @@ import java.util.Hashtable;
 
 public class MedicalSystem {
 
+    //we set up integerTracker to keep track of the next available ID for patients and appointments
     private int intergerTracker = 0;
 
     // Collections to store application data
@@ -23,11 +24,23 @@ public class MedicalSystem {
 
     public boolean registerPatient(Patient patient) {
         // TODO: Implement after Patient.java is merged
+        for (Patient p : patients.values()) {
+            if (p.getPatientID() == patient.getPatientID()) {
+                return false; // Patient with the same ID already exists
+
+            }
+        }
+
         return false;
     }
 
     public Patient searchPatientByID(int patientId) {
         // TODO: Implement after Patient.java is merged
+for (Patient p : patients.values()) {
+            if (p.getPatientID() == patientId) {
+                return p; // Return the patient if found
+            }
+        }
         return null;
     }
 
