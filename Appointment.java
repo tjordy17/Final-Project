@@ -5,8 +5,7 @@ public class Appointment {
     private String date;           // stores the appointment date
     private String time;           // stores the appointment time
 
-    public Appointment(int appointmentID, int patientID, String doctor,
-                       String date, String time) {
+    public Appointment(int appointmentID, int patientID, String doctor,String date, String time) {
         this.appointmentID = appointmentID;   // sets the appointment id
         this.patientID = patientID;           // sets the patient id
         this.doctor = doctor;                 // sets the doctor name
