@@ -54,9 +54,12 @@ public class MedicalFrame extends Frame implements ActionListener {
 
         Panel mainPanel = new Panel(new BorderLayout(7, 8));
 
-        Panel inputPanel = new Panel();
-        inputPanel.setLayout(new GridLayout(3, 1, 10, 15));
+        Panel inputPanel = new Panel(new GridLayout(3, 1, 10, 15));
         Panel patientPanel = new Panel(new GridLayout(3,4,10,10));
+        Panel patientContainer = new Panel(new BorderLayout());
+
+        patientContainer.add(new Label("PATIENT INFORMATION"), BorderLayout.NORTH);
+        patientContainer.add(patientPanel, BorderLayout.CENTER);
 
         patientPanel.add(new Label("Patient ID:"));
         patientPanel.add(patientIdField);
@@ -77,6 +80,12 @@ public class MedicalFrame extends Frame implements ActionListener {
         patientPanel.add(phoneField);
         
         Panel appointmentPanel = new Panel(new GridLayout(2,4,10,10));
+        Panel appointmentContainer = new Panel(new BorderLayout());
+
+    
+        appointmentContainer.add(new Label("APPOINTMENT INFORMATION"), BorderLayout.NORTH);
+
+        appointmentContainer.add(appointmentPanel, BorderLayout.CENTER);
         appointmentPanel.add(new Label("Appointment ID:"));
         appointmentPanel.add(appointmentIdField);
         appointmentPanel.add(new Label("Doctor:"));
@@ -87,6 +96,9 @@ public class MedicalFrame extends Frame implements ActionListener {
         appointmentPanel.add(appointmentTimeField);
 
         Panel recordPanel = new Panel(new GridLayout(4, 2, 10, 10));
+        Panel recordContainer = new Panel(new BorderLayout());
+        recordContainer.add(new Label("MEDICAL RECORD INFORMATION"), BorderLayout.NORTH);
+        recordContainer.add(recordPanel, BorderLayout.CENTER);
         recordPanel.add(new Label("Diagnosis:"));
         recordPanel.add(diagnosisField);
         recordPanel.add(new Label("Treatment:"));
@@ -96,9 +108,10 @@ public class MedicalFrame extends Frame implements ActionListener {
         recordPanel.add(new Label("Notes:"));
         recordPanel.add(notesField);
 
-        inputPanel.add(patientPanel);
-        inputPanel.add(appointmentPanel);
-        inputPanel.add(recordPanel);
+        
+        inputPanel.add(patientContainer);
+        inputPanel.add(appointmentContainer);
+        inputPanel.add(recordContainer);
 
         Panel buttonPanel = new Panel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         Button registerButton = new Button("Register Patient");
