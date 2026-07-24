@@ -118,6 +118,7 @@ public class MedicalFrame extends Frame implements ActionListener {
         Button searchButton = new Button("Search Patient");
         Button showAllButton = new Button("Show All Patients");
         Button scheduleButton = new Button("Schedule Appointment");
+        Button showAppointmentsButton = new Button("Show Appointments");
         Button addRecordButton = new Button("Add Record");
         Button loadButton = new Button("Load Data");
         Button saveButton = new Button("Save Data");
@@ -126,6 +127,7 @@ public class MedicalFrame extends Frame implements ActionListener {
         searchButton.addActionListener(this);
         showAllButton.addActionListener(this);
         scheduleButton.addActionListener(this);
+        showAppointmentsButton.addActionListener(this);
         addRecordButton.addActionListener(this);
         loadButton.addActionListener(this);
         saveButton.addActionListener(this);
@@ -134,6 +136,7 @@ public class MedicalFrame extends Frame implements ActionListener {
         buttonPanel.add(searchButton);
         buttonPanel.add(showAllButton);
         buttonPanel.add(scheduleButton);
+        buttonPanel.add(showAppointmentsButton);
         buttonPanel.add(addRecordButton);
         buttonPanel.add(loadButton);
         buttonPanel.add(saveButton);
@@ -167,8 +170,8 @@ public class MedicalFrame extends Frame implements ActionListener {
             case "Schedule Appointment":
                 scheduleAppointment();
                 break;
-            case "Show Patients":
-                showPatients();
+            case "Add Record":
+                addRecord();
                 break;
             case "Show Appointments":
                 showAppointments();
@@ -257,21 +260,29 @@ public class MedicalFrame extends Frame implements ActionListener {
         }
     }
 
-    private void showPatients() {
-        Hashtable<Integer, Patient> patients = medicalSystem.getPatients();
+    
+private void addRecord() {
+        try {
+            int patientId = Integer.parseInt(patientIdField.getText().trim());
 
-        if (patients.isEmpty()) {
-            resultArea.append("No patients registered.\n");
-            return;
-        }
+    MedicalRecord record = new MedicalRecord(
+        patientId,
+        diagnosisField.getText().trim(),
+        treatmentField.getText().trim(),
+        medicationField.getText().trim(),
+        notesField.getText().trim());
 
-        resultArea.append("\n=== All Patients ===\n");
-        for (Patient patient : patients.values()) {
-            resultArea.append(patient.toString() + "\n");
+            boolean success = medicalSystem.addMedicalRecord(record);
+            resultArea.append(success
+                    ? "Medical record added successfully.\n"
+                    : "Failed to add medical record. Check the patient ID.\n");
+        } catch (NumberFormatException ex) {
+            resultArea.append("Please enter a valid numeric patient ID.\n");
         }
     }
-    private void showAppointments() {
-         ArrayList<Appointment> appointments = medicalSystem.getAppointments();
+
+public void showAppointments() {
+        ArrayList<Appointment> appointments = medicalSystem.getAppointments();
 
         if (appointments.isEmpty()) {
             resultArea.append("No appointments scheduled.\n");
@@ -283,4 +294,4 @@ public class MedicalFrame extends Frame implements ActionListener {
             resultArea.append(appointment.toString() + "\n");
         }
     }
-}
+}   
