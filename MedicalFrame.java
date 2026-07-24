@@ -148,23 +148,7 @@ public class MedicalFrame extends Frame implements ActionListener {
         add(resultArea, BorderLayout.SOUTH);
         setVisible(true);
     }
-    //this method creates a section panel with a title and specified number of rows and columns for the content.
-    private Panel createSectionPanel(String title, int rows, int cols) {
-        Panel sectionPanel = new Panel(new BorderLayout(5, 5));
-        sectionPanel.setBackground(Color.WHITE);
-
-        Label titleLabel = new Label(title);
-        titleLabel.setAlignment(Label.CENTER);
-        titleLabel.setBackground(Color.LIGHT_GRAY);
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
-
-        Panel contentPanel = new Panel(new GridLayout(rows, cols, 6, 6));
-        contentPanel.setBackground(Color.WHITE);
-
-        sectionPanel.add(titleLabel, BorderLayout.NORTH);
-        sectionPanel.add(contentPanel, BorderLayout.CENTER);
-        return contentPanel;
-    }
+ 
 
     @Override
     public void actionPerformed(ActionEvent e) {
