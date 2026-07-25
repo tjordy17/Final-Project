@@ -43,12 +43,12 @@ public class MedicalInterface {
 
                 case 5:
                     System.out.println("\nSaving data...");
-                    // medicalSystem.saveData();
+                    medicalSystem.saveData();
                     break;
 
                 case 6:
                     System.out.println("\nLoading data...");
-                    // medicalSystem.loadData();
+                    medicalSystem.loadData();
                     break;
 
                 case 7:
@@ -94,6 +94,35 @@ public class MedicalInterface {
 
             case 1:
                 System.out.println("Register Patient (TODO)");
+
+                System.out.println("First Name: ");
+                String first_name = scanner.nextLine();
+
+                System.out.println("Last Name: ");
+                String last_name = scanner.nextLine();
+
+                System.out.println("Date of Birth dd/mm/yyyy: ");
+                String date_of_birth = scanner.nextLine();
+
+                System.out.println("Age: ");
+                int age = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("Gender: ");
+                String gender = scanner.nextLine();
+
+                System.out.println("Phone Number: ");
+                String phone_number = scanner.nextLine();
+
+                medicalSystem.registerPatient(new Patient(
+                    0,
+                    first_name,
+                    last_name,
+                    date_of_birth, 
+                    age, 
+                    gender, 
+                    phone_number
+                ));
                 // medicalSystem.registerPatient(...);
                 break;
 
@@ -160,7 +189,28 @@ public class MedicalInterface {
         switch (choice) {
 
             case 1:
-                System.out.println("Add Medical Record (TODO)");
+
+                MedicalRecord medicalRecord;
+
+                System.out.println("Id: ");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                
+                System.out.println("Diagnosis: ");
+                String diagnosis = scanner.nextLine();
+
+                System.out.println("Treatment Plan: ");
+                String treatment = scanner.nextLine();
+
+                System.out.println("Medication: ");
+                String medication = scanner.nextLine();
+
+                System.out.println("Notes: ");
+                String notes = scanner.nextLine();
+
+                medicalRecord = new MedicalRecord(diagnosis, treatment, medication, notes);
+
+                medicalSystem.addMedicalRecord(id,medicalRecord);
                 break;
 
             case 2:

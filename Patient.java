@@ -21,6 +21,7 @@ public class Patient {
         this.Id = id;
         this.first_name = firstName;
         this.last_name = lastName;
+        this.date_of_birth = date_of_birth;
         this.age = age;
         this.gender = gender;
         this.phone_number = phone;
@@ -67,15 +68,15 @@ public class Patient {
     }
 
     private String format_medical_records_for_output(){
-        String outputString = "{";
+        String outputString = "[";
         for(MedicalRecord m : medicalRecords){
             outputString += m +",";
         }
-        return outputString + "}";
+        return outputString + "]";
     }
 
     public String toString(){
-        return String.format("{%s,%s,%s,%s,%s,%s,%s}",first_name,last_name,date_of_birth,age,""+gender,phone_number,format_medical_records_for_output());
+        return String.format("(%s,%s,%s,%s,%s,%s,%s)",first_name,last_name,date_of_birth,age,""+gender,phone_number,format_medical_records_for_output());
     }
 
 }
