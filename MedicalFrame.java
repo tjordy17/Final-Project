@@ -7,6 +7,7 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.Panel;
+import java.awt.ScrollPane;
 import java.awt.TextArea;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Hashtable;
+
 
 public class MedicalFrame extends Frame implements ActionListener {
 
@@ -43,7 +45,7 @@ public class MedicalFrame extends Frame implements ActionListener {
 
         setLayout(new BorderLayout(10, 10));
         setSize(900, 800);
-        setResizable(false);
+        setResizable(true);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -55,7 +57,7 @@ public class MedicalFrame extends Frame implements ActionListener {
         Panel mainPanel = new Panel(new BorderLayout(7, 8));
 
         Panel inputPanel = new Panel(new GridLayout(3, 1, 10, 15));
-        Panel patientPanel = new Panel(new GridLayout(3,4,10,10));
+        Panel patientPanel = new Panel(new GridLayout(9,2 , 10, 10));
         Panel patientContainer = new Panel(new BorderLayout());
 
         patientContainer.add(new Label("PATIENT INFORMATION"), BorderLayout.NORTH);
@@ -79,7 +81,7 @@ public class MedicalFrame extends Frame implements ActionListener {
         patientPanel.add(new Label("Phone:"));
         patientPanel.add(phoneField);
         
-        Panel appointmentPanel = new Panel(new GridLayout(2,4,10,10));
+        Panel appointmentPanel = new Panel(new GridLayout(6, 2, 10, 10));
         Panel appointmentContainer = new Panel(new BorderLayout());
 
     
@@ -132,11 +134,11 @@ public class MedicalFrame extends Frame implements ActionListener {
         loadButton.addActionListener(this);
         saveButton.addActionListener(this);
         // Add buttons to the button panel
-        buttonPanel.add(registerButton);
-        buttonPanel.add(searchButton);
-        buttonPanel.add(showAllButton);
-        buttonPanel.add(scheduleButton);
-        buttonPanel.add(showAppointmentsButton);
+        patientPanel.add(registerButton);
+        patientPanel.add(searchButton);
+        patientPanel.add(showAllButton);
+        appointmentPanel.add(scheduleButton);
+        appointmentPanel.add(showAppointmentsButton);
         buttonPanel.add(addRecordButton);
         buttonPanel.add(loadButton);
         buttonPanel.add(saveButton);
@@ -146,8 +148,10 @@ public class MedicalFrame extends Frame implements ActionListener {
 
         mainPanel.add(inputPanel, BorderLayout.NORTH);
         mainPanel.add(buttonPanel, BorderLayout.CENTER);
- 
-        add(mainPanel, BorderLayout.CENTER);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.add(mainPanel);
+        add(scrollPane, BorderLayout.CENTER);
         add(resultArea, BorderLayout.SOUTH);
         setVisible(true);
     }
