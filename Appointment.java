@@ -51,6 +51,6 @@ public class Appointment {
                 + ", Patient ID: " + patientID
                 + ", Doctor: " + doctor
                 + ", Date: " + date
-                + ", Time: " + time;
+                + ", Time(0:00-24:00): " + time;
     }
 }
