@@ -239,7 +239,7 @@ public class MedicalSystem {
         System.out.println("\n=== Medical History Report ===");
 
         boolean hasRecords = false;
-        
+
         for (Patient patient : patients.values()) {
             if (patient.getMedicalRecords().isEmpty()) {
                 continue;
@@ -338,7 +338,12 @@ public class MedicalSystem {
             bf = new BufferedReader(new FileReader(patientsFile));  
 
             String top = bf.readLine();
-            intergerTracker = Integer.parseInt(top);
+            try{
+                intergerTracker = Integer.parseInt(top);
+            }
+            catch(NumberFormatException e){
+                
+            }
 
             while(bf.ready()){
                 String line = bf.readLine();
