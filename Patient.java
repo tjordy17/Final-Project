@@ -18,6 +18,7 @@ public class Patient {
 
         medicalRecords = new ArrayList<MedicalRecord>();
 
+        //Init the variables for patiant
         this.Id = id;
         this.first_name = firstName;
         this.last_name = lastName;
@@ -75,6 +76,7 @@ public class Patient {
         return outputString;
     }
 
+    //Gets the human readable string ouput for patiant
     public String getInfo(){
         return String.format("""
 

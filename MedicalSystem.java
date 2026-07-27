@@ -25,6 +25,7 @@ public class MedicalSystem {
                       PATIENT MANAGEMENT
        ===================================================== */
 
+    //Print a easy format string for the user to easily look up all patients
     public String getStringOfAllPatients(){
         String out = "\n";
         for (int patientId : patients.keySet()) {
@@ -33,7 +34,9 @@ public class MedicalSystem {
         return out;
     }
 
+    //Registers patient
     public boolean registerPatient(Patient patient) {
+        //Counts the id to assign to the patiant is loaded in the loadData() function
         intergerTracker++;
         patient.Id = intergerTracker;
         patients.put(intergerTracker, patient);
@@ -42,7 +45,8 @@ public class MedicalSystem {
         
         return false;
     }
-
+    
+    //Searchs a Patient by Id if not found throws a PatientNotFoundException
     public Patient searchPatientByID(int patientId) {
         Patient pTemp;
         pTemp = patients.get(patientId);
@@ -52,9 +56,11 @@ public class MedicalSystem {
         return pTemp;
     }
 
+    //Searchs a Patient by name fragments returns a list of all patients who match that critera
     public ArrayList<Patient> searchPatientByName(String firstName) {
         ArrayList<Patient> pTemp = new ArrayList<Patient>();
         for (Patient patient : patients.values()) {
+            //Checks if the letters are in the first name or last name
             if(patient.getFirstName().contains(firstName) || patient.getLastName().contains(firstName)){
                 pTemp.add(patient);
             }
@@ -62,7 +68,9 @@ public class MedicalSystem {
         return pTemp;
     }
 
+    //Updates a patients data
     public boolean updatePatient(int patientId, Patient updatedPatient) {
+        //Updated Patient
         if (updatedPatient == null || !patients.containsKey(patientId)) {
             return false;
         }
@@ -77,12 +85,12 @@ public class MedicalSystem {
         return true;
     }
 
+    //Delete Patient 
     public boolean deletePatient(int patientId) {
         Patient pTemp = patients.remove(patientId);
         if(pTemp == null){
             throw new PatientNotFoundException();
         }
-        // TODO: Implement after Patient.java is merged
         return true;
     }
 
@@ -231,7 +239,7 @@ public class MedicalSystem {
         System.out.println("\n=== Medical History Report ===");
 
         boolean hasRecords = false;
-
+        
         for (Patient patient : patients.values()) {
             if (patient.getMedicalRecords().isEmpty()) {
                 continue;
@@ -350,11 +358,14 @@ public class MedicalSystem {
                     patiantValues[2], 
                     Integer.parseInt(patiantValues[3]), 
                     patiantValues[4], 
-                    patiantValues[5]);
+                    patiantValues[5]);  
+
+                //Regex for the medical Records
                 
                 Pattern pattern = Pattern.compile("\\{([^}]*)\\}");
                 Matcher matcher = pattern.matcher(line);
-      
+                    
+                //Finds all the medical records
                 while(matcher.find()){
                     String[] recordInfo = matcher.group(1).split(",");
 

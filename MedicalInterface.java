@@ -17,8 +17,9 @@ public class MedicalInterface {
 
         System.out.println("=======================================");
         System.out.println("   Medical Records Management System");
-        System.out.println("=======================================");
+        System.out.println( "=======================================");
 
+        //Gets your choice and calls the apporitate function for the choice
         while (running) {
 
             displayMainMenu();
