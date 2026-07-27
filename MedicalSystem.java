@@ -54,15 +54,12 @@ public class MedicalSystem {
         return pTemp;
     }
 
-    public Patient searchPatientByName(String firstName, String lastName) {
-        Patient pTemp = null;
+    public ArrayList<Patient> searchPatientByName(String firstName) {
+        ArrayList<Patient> pTemp = new ArrayList<Patient>();
         for (Patient patient : patients.values()) {
-            if(patient.getFirstName() == firstName && patient.getLastName() == lastName){
-                pTemp = patient;
+            if(patient.getFirstName().contains(firstName) || patient.getLastName().contains(firstName)){
+                pTemp.add(patient);
             }
-        }
-        if(pTemp == null){
-            throw new PatientNotFoundException();
         }
         return pTemp;
     }

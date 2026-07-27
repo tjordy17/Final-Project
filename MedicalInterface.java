@@ -128,6 +128,7 @@ public class MedicalInterface {
 
             case 2:
              searchPatient();
+             break;
 
             case 3:
                 updatePatient();
@@ -193,28 +194,7 @@ public class MedicalInterface {
         switch (choice) {
 
             case 1:
-
-                MedicalRecord medicalRecord;
-
-                System.out.println("Id: ");
-                int id = scanner.nextInt();
-                scanner.nextLine();
-                
-                System.out.println("Diagnosis: ");
-                String diagnosis = scanner.nextLine();
-
-                System.out.println("Treatment Plan: ");
-                String treatment = scanner.nextLine();
-
-                System.out.println("Medication: ");
-                String medication = scanner.nextLine();
-
-                System.out.println("Notes: ");
-                String notes = scanner.nextLine();
-
-                medicalRecord = new MedicalRecord(diagnosis, treatment, medication, notes);
-
-                medicalSystem.addMedicalRecord(id,medicalRecord);
+                addMedicalRecord();
                 break;
 
             case 2:
@@ -285,46 +265,38 @@ public class MedicalInterface {
     }
 
     private void searchPatient() {
-        System.out.println("1: Search by Name \n 2: Search by Id");
-        System.out.println("\nChoice: ");
-        int choice2 = scanner.nextInt();
-        scanner.nextLine();
+        System.out.println("1. Search by ID");
+        System.out.println("2. Search by name");
+        int searchChoice = getChoice();
 
-        if(choice2 == 1){
-            System.out.println("First Name: ");
-            String firstName = scanner.nextLine();
-
-            System.out.println("Last Name: ");
-            String lastName = scanner.nextLine();
-
+        if (searchChoice == 1) {
             try{
-                Patient tempPatient = medicalSystem.searchPatientByName(firstName, lastName);
-                System.out.println(tempPatient.getInfo());
+                int patientId = readInt("Patient ID: ");
+                Patient patient = medicalSystem.searchPatientByID(patientId);
+
+                if (patient == null) {
+                    System.out.println("Patient not found.");
+                } else {
+                    System.out.println(patient.getInfo());
+                }
             }
             catch(PatientNotFoundException e){
-                System.out.println("Patiant with the name: '" + firstName + " " + lastName + "'" + "not found");
+                System.out.println("Patient was not found");
             }
+        } else if (searchChoice == 2) {
+            String name = readRequiredText("Enter name fragment: ");
+            ArrayList<Patient> patients = medicalSystem.searchPatientByName(name);
 
-
-        }
-        else if(choice2 == 2){
-            System.out.println("1: Search by Name \n 2: Search by Id");
-            System.out.println("\nChoice: ");
-            int id = scanner.nextInt();
-
-            try {
-                Patient tempPatient = medicalSystem.searchPatientByID(id);
-                System.out.println(tempPatient.getInfo());
+            if (patients.isEmpty()) {
+                System.out.println("No matching patients found.");
+            } else {
+                for (Patient patient : patients) {
+                    System.out.println(patient.getInfo());
+                }
             }
-            catch(PatientNotFoundException e){
-                System.out.println("Patiant with the id: '" + id + "'" + " not found");
-            }
-
+        } else {
+            System.out.println("Invalid option.");
         }
-        else{
-            System.out.println("Please try again and pick 1 or 2");
-        }
-
     }
 
     private void updatePatient() {
@@ -407,19 +379,27 @@ public class MedicalInterface {
     }
 
     private void addMedicalRecord() {
-        int patientId = readInt("Patient ID: ");
-        String diagnosis = readRequiredText("Diagnosis: ");
-        String treatment = readRequiredText("Treatment: ");
-        String medication = readRequiredText("Medication: ");
-        String notes = readRequiredText("Notes: ");
+        MedicalRecord medicalRecord;
 
-        MedicalRecord record = new MedicalRecord(diagnosis, treatment, medication, notes);
+        System.out.println("Id: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        
+        System.out.println("Diagnosis: ");
+        String diagnosis = scanner.nextLine();
 
-        if (medicalSystem.addMedicalRecord(patientId,record)) {
-            System.out.println("Medical record added successfully.");
-        } else {
-            System.out.println("Medical record could not be added. Check the patient ID.");
-        }
+        System.out.println("Treatment Plan: ");
+        String treatment = scanner.nextLine();
+
+        System.out.println("Medication: ");
+        String medication = scanner.nextLine();
+
+        System.out.println("Notes: ");
+        String notes = scanner.nextLine();
+
+        medicalRecord = new MedicalRecord(diagnosis, treatment, medication, notes);
+
+        medicalSystem.addMedicalRecord(id,medicalRecord);
     }
 
     private void viewMedicalRecords() {
