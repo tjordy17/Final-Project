@@ -1,15 +1,21 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MedicalInterface {
 
     private MedicalSystem medicalSystem;
     private Scanner scanner;
+    private ScheduledExecutorService autosaveExecutor;
+    private static final int AUTOSAVE_INTERVAL_SECONDS = 60;
 
     public MedicalInterface(MedicalSystem medicalSystem) {
         this.medicalSystem = medicalSystem;
         medicalSystem.loadData();
         this.scanner = new Scanner(System.in);
+        startAutoSave();
     }
 
     public void start() {
@@ -64,7 +70,39 @@ public class MedicalInterface {
             }
         }
 
+        stopAutoSave();
         scanner.close();
+    }
+
+    private void startAutoSave() {
+        autosaveExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread thread = new Thread(r, "MedicalInterface-Autosave");
+            thread.setDaemon(true);
+            return thread;
+        });
+
+        autosaveExecutor.scheduleAtFixedRate(() -> {
+            try {
+                medicalSystem.saveData();
+                System.out.println("[Auto-save completed]");
+            } catch (Exception e) {
+                System.out.println("[Auto-save failed] " + e.getMessage());
+            }
+        }, AUTOSAVE_INTERVAL_SECONDS, AUTOSAVE_INTERVAL_SECONDS, TimeUnit.SECONDS);
+    }
+
+    private void stopAutoSave() {
+        if (autosaveExecutor != null && !autosaveExecutor.isShutdown()) {
+            autosaveExecutor.shutdown();
+            try {
+                if (!autosaveExecutor.awaitTermination(2, TimeUnit.SECONDS)) {
+                    autosaveExecutor.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                autosaveExecutor.shutdownNow();
+            }
+        }
     }
 
     private void displayMainMenu() {

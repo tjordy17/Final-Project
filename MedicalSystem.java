@@ -26,7 +26,7 @@ public class MedicalSystem {
        ===================================================== */
 
     //Print a easy format string for the user to easily look up all patients
-    public String getStringOfAllPatients(){
+    public synchronized String getStringOfAllPatients(){
         String out = "\n";
         for (int patientId : patients.keySet()) {
             out += patientId + ":" + patients.get(patientId).getFirstName() + " " + patients.get(patientId).getLastName() + "\n";
@@ -35,7 +35,7 @@ public class MedicalSystem {
     }
 
     //Registers patient
-    public boolean registerPatient(Patient patient) {
+    public synchronized boolean registerPatient(Patient patient) {
         //Counts the id to assign to the patiant is loaded in the loadData() function
         intergerTracker++;
         patient.Id = intergerTracker;
@@ -47,7 +47,7 @@ public class MedicalSystem {
     }
     
     //Searchs a Patient by Id if not found throws a PatientNotFoundException
-    public Patient searchPatientByID(int patientId) {
+    public synchronized Patient searchPatientByID(int patientId) {
         Patient pTemp;
         pTemp = patients.get(patientId);
         if(pTemp == null){
@@ -57,7 +57,7 @@ public class MedicalSystem {
     }
 
     //Searchs a Patient by name fragments returns a list of all patients who match that critera
-    public ArrayList<Patient> searchPatientByName(String firstName) {
+    public synchronized ArrayList<Patient> searchPatientByName(String firstName) {
         ArrayList<Patient> pTemp = new ArrayList<Patient>();
         for (Patient patient : patients.values()) {
             //Checks if the letters are in the first name or last name
@@ -69,8 +69,7 @@ public class MedicalSystem {
     }
 
     //Updates a patients data
-    public boolean updatePatient(int patientId, Patient updatedPatient) {
-        //Updated Patient
+    public synchronized boolean updatePatient(int patientId, Patient updatedPatient) {
         if (updatedPatient == null || !patients.containsKey(patientId)) {
             return false;
         }
@@ -86,7 +85,7 @@ public class MedicalSystem {
     }
 
     //Delete Patient 
-    public boolean deletePatient(int patientId) {
+    public synchronized boolean deletePatient(int patientId) {
         Patient pTemp = patients.remove(patientId);
         if(pTemp == null){
             throw new PatientNotFoundException();
@@ -98,7 +97,7 @@ public class MedicalSystem {
                    APPOINTMENT MANAGEMENT
        ===================================================== */
 
-    public boolean scheduleAppointment(Appointment appointment) {
+    public synchronized boolean scheduleAppointment(Appointment appointment) {
         if (appointment == null) {
             return false;
         }
@@ -117,7 +116,7 @@ public class MedicalSystem {
         return true;
     }
 
-    public boolean updateAppointment(int appointmentId,
+    public synchronized boolean updateAppointment(int appointmentId,
                                      Appointment updatedAppointment) {
         if (updatedAppointment == null) {
             return false;
@@ -135,7 +134,7 @@ public class MedicalSystem {
         return false;
     }
 
-    public boolean cancelAppointment(int appointmentId) {
+    public synchronized boolean cancelAppointment(int appointmentId) {
         for (int i = 0; i < appointments.size(); i++) {
             if (appointments.get(i).getAppointmentID() == appointmentId) {
                 appointments.remove(i);
@@ -146,7 +145,7 @@ public class MedicalSystem {
         return false;
     }
 
-    public ArrayList<Appointment> getAppointments(int patientId) {
+    public synchronized ArrayList<Appointment> getAppointments(int patientId) {
         ArrayList<Appointment> patientAppointments = new ArrayList<>();
 
         for (Appointment appointment : appointments) {
@@ -162,7 +161,7 @@ public class MedicalSystem {
                   MEDICAL RECORD MANAGEMENT
        ===================================================== */
 
-    public boolean addMedicalRecord(int patientId, MedicalRecord record) {
+    public synchronized boolean addMedicalRecord(int patientId, MedicalRecord record) {
         try {
             searchPatientByID(patientId).addToRecord(record);
         } 
@@ -174,7 +173,7 @@ public class MedicalSystem {
      
     }
 
-    public ArrayList<MedicalRecord> getMedicalRecords(int patientId) {
+    public synchronized ArrayList<MedicalRecord> getMedicalRecords(int patientId) {
         try {
             return searchPatientByID(patientId).getMedicalRecords();
         } 
@@ -185,7 +184,7 @@ public class MedicalSystem {
          
     }
 
-    public boolean updateMedicalRecord(int patientId,
+    public synchronized boolean updateMedicalRecord(int patientId,
                                        MedicalRecord updatedRecord) {
         if (updatedRecord == null) {
             return false;
@@ -205,7 +204,7 @@ public class MedicalSystem {
                         REPORTS
        ===================================================== */
 
-    public void generatePatientReport() {
+    public synchronized void generatePatientReport() {
         System.out.println("\n=== Patient Report ===");
 
         if (patients.isEmpty()) {
@@ -222,7 +221,7 @@ public class MedicalSystem {
         }
     }
 
-    public void generateAppointmentReport() {
+    public synchronized void generateAppointmentReport() {
         System.out.println("\n=== Appointment Report ===");
 
         if (appointments.isEmpty()) {
@@ -235,7 +234,7 @@ public class MedicalSystem {
         }
     }
 
-    public void generateMedicalHistoryReport() {
+    public synchronized void generateMedicalHistoryReport() {
         System.out.println("\n=== Medical History Report ===");
 
         boolean hasRecords = false;
@@ -266,7 +265,7 @@ public class MedicalSystem {
                      DATA PERSISTENCE
        ===================================================== */
 
-    public void saveData() {
+    public synchronized void saveData() {
         // TODO: Save all collections to text files
 
         //Patient Saving
@@ -321,7 +320,7 @@ public class MedicalSystem {
 
     }
 
-    public void loadData() {
+    public synchronized void loadData() {
         patients.clear();
         appointments.clear();
         // TODO: Load all collections from text files
@@ -424,11 +423,11 @@ public class MedicalSystem {
                      GETTERS (Optional)
        ===================================================== */
 
-    public Hashtable<Integer,Patient> getPatients() {
+    public synchronized Hashtable<Integer,Patient> getPatients() {
         return patients;
     }
 
-    public ArrayList<Appointment> getAppointments() {
+    public synchronized ArrayList<Appointment> getAppointments() {
         return appointments;
     }
 
