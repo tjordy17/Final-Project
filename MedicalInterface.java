@@ -8,6 +8,7 @@ public class MedicalInterface {
 
     public MedicalInterface(MedicalSystem medicalSystem) {
         this.medicalSystem = medicalSystem;
+        medicalSystem.loadData();
         this.scanner = new Scanner(System.in);
     }
 
@@ -95,40 +96,12 @@ public class MedicalInterface {
         switch (choice) {
 
             case 1:
-                System.out.println("First Name: ");
-                String first_name = scanner.nextLine();
-
-                System.out.println("Last Name: ");
-                String last_name = scanner.nextLine();
-
-                System.out.println("Date of Birth dd/mm/yyyy: ");
-                String date_of_birth = scanner.nextLine();
-
-                System.out.println("Age: ");
-                int age = scanner.nextInt();
-                scanner.nextLine();
-
-                System.out.println("Gender: ");
-                String gender = scanner.nextLine();
-
-                System.out.println("Phone Number: ");
-                String phone_number = scanner.nextLine();
-
-                medicalSystem.registerPatient(new Patient(
-                    0,
-                    first_name,
-                    last_name,
-                    date_of_birth, 
-                    age, 
-                    gender, 
-                    phone_number
-                ));
-                // medicalSystem.registerPatient(...);
+                registerPatient();
                 break;
 
             case 2:
-             searchPatient();
-             break;
+                searchPatient();
+                break;
 
             case 3:
                 updatePatient();
@@ -247,21 +220,34 @@ public class MedicalInterface {
     }
 
     private void registerPatient() {
-        int patientId = readInt("Patient ID: ");
-        String firstName = readRequiredText("First name: ");
-        String lastName = readRequiredText("Last name: ");
-        String dateOfBirth = readRequiredText("Date of birth: ");
-        int age = readInt("Age: ");
-        String gender = readRequiredText("Gender: ");
-        String phone = readRequiredText("Phone: ");
+        System.out.println("First Name: ");
+        String first_name = scanner.nextLine();
 
-        Patient patient = new Patient(patientId, firstName, lastName, dateOfBirth, age, gender, phone);
+        System.out.println("Last Name: ");
+        String last_name = scanner.nextLine();
 
-        if (medicalSystem.registerPatient(patient)) {
-            System.out.println("Patient registered successfully.");
-        } else {
-            System.out.println("Patient registration failed. ID may already exist.");
-        }
+        System.out.println("Date of Birth dd/mm/yyyy: ");
+        String date_of_birth = scanner.nextLine();
+
+        System.out.println("Age: ");
+        int age = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Gender: ");
+        String gender = scanner.nextLine();
+
+        System.out.println("Phone Number: ");
+        String phone_number = scanner.nextLine();
+
+        medicalSystem.registerPatient(new Patient(
+            0,
+            first_name,
+            last_name,
+            date_of_birth, 
+            age, 
+            gender, 
+            phone_number
+        ));
     }
 
     private void searchPatient() {

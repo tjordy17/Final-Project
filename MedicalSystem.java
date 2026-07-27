@@ -3,8 +3,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.Painter;
-
 public class MedicalSystem {
 
     //we set up integerTracker to keep track of the next available ID for patients and appointments
