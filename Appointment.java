@@ -1,34 +1,11 @@
 public class Appointment {
-
-    public Appointment(int appointmentID,int patientID,String doctor,String date,String time){}
-
-    public int getAppointmentID(){}
-
-    public int getPatientID(){}
-
-    public String getDoctor(){}
-
-    public String getDate(){}
-
-    public String getTime(){}
-
-    public void setDoctor(String doctor){}
-
-    public void setDate(String date){}
-
-    public void setTime(String time){}
-
-    public String toString(){}
-
-}
     private int appointmentID;     // stores the appointment id
     private int patientID;         // stores the patient id
     private String doctor;         // stores the doctor name
     private String date;           // stores the appointment date
     private String time;           // stores the appointment time
 
-    public Appointment(int appointmentID, int patientID, String doctor,
-                       String date, String time) {
+    public Appointment(int appointmentID, int patientID, String doctor,String date, String time) {
         this.appointmentID = appointmentID;   // sets the appointment id
         this.patientID = patientID;           // sets the patient id
         this.doctor = doctor;                 // sets the doctor name
@@ -74,6 +51,6 @@ public class Appointment {
                 + ", Patient ID: " + patientID
                 + ", Doctor: " + doctor
                 + ", Date: " + date
-                + ", Time: " + time;
+                + ", Time(0:00-24:00): " + time;
     }
 }

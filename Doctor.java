@@ -4,13 +4,6 @@ public class Doctor extends User {
         super(userId, name, "Doctor");
     }
       
-        /*
-        //Permissions to be added here in the future
-        public boolean canEditMedicalRecords() {
-        return true;
-        }
-
-        public boolean canGenerateReports() {
-        return false;
-         } */
+  //this subclass represents a doctor user in the system, inheriting from the User class.
+  // It has a constructor that initializes the doctor with a user ID and name, and sets the role to "Doctor".
 }
