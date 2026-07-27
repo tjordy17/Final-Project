@@ -48,4 +48,15 @@ public class MedicalRecord {
         return String.format("{%s,%s,%s,%s}",diagnosis, treatment, medication, notes);
     }
 
+    public String formatReadable(){
+        return String.format("""
+            
+                Diagnosis: %s
+                Treatment Plan: %s
+                Medication: %s
+                notes: %s
+
+                """,diagnosis,treatment,medication,notes);
+    }
+
 }

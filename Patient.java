@@ -67,6 +67,30 @@ public class Patient {
         this.phone_number = phone;
     }
 
+    public String getMedicalHistory(){
+        String outputString = "";
+        for(MedicalRecord m : medicalRecords){
+            outputString+= m.formatReadable();
+        }
+        return outputString;
+    }
+
+    public String getInfo(){
+        return String.format("""
+
+                Patiant: %d
+                Name: %s %s
+                Date of Birth: %s
+                Age: %d
+                Gender: %s
+                Contact: %s
+
+                Medical History:
+                %s
+
+                """,Id, first_name,last_name, date_of_birth, age, gender, phone_number,getMedicalHistory());
+    }
+
     private String format_medical_records_for_output(){
         String outputString = "[";
         for(MedicalRecord m : medicalRecords){

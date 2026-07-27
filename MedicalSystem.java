@@ -26,6 +26,14 @@ public class MedicalSystem {
                       PATIENT MANAGEMENT
        ===================================================== */
 
+    public String getStringOfAllPatients(){
+        String out = "\n";
+        for (int patientId : patients.keySet()) {
+            out += patientId + ":" + patients.get(patientId).getFirstName() + " " + patients.get(patientId).getLastName() + "\n";
+        }
+        return out;
+    }
+
     public boolean registerPatient(Patient patient) {
         intergerTracker++;
         patient.Id = intergerTracker;
