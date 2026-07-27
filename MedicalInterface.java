@@ -84,8 +84,7 @@ public class MedicalInterface {
         autosaveExecutor.scheduleAtFixedRate(() -> {
             try {
                 medicalSystem.saveData();
-                System.out.println("[Auto-save completed]");
-            } catch (Exception e) {
+             } catch (Exception e) {
                 System.out.println("[Auto-save failed] " + e.getMessage());
             }
         }, AUTOSAVE_INTERVAL_SECONDS, AUTOSAVE_INTERVAL_SECONDS, TimeUnit.SECONDS);
