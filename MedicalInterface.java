@@ -87,18 +87,88 @@ public class MedicalInterface {
         System.out.println("1. Register Patient");
         System.out.println("2. Search Patient");
         System.out.println("3. Update Patient");
-        System.out.println("4. Back");
+        System.out.println("4. Show All Patients in database");
+        System.out.println("5. Back");
 
         int choice = getChoice();
 
         switch (choice) {
 
             case 1:
-                registerPatient();
+                System.out.println("First Name: ");
+                String first_name = scanner.nextLine();
+
+                System.out.println("Last Name: ");
+                String last_name = scanner.nextLine();
+
+                System.out.println("Date of Birth dd/mm/yyyy: ");
+                String date_of_birth = scanner.nextLine();
+
+                System.out.println("Age: ");
+                int age = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("Gender: ");
+                String gender = scanner.nextLine();
+
+                System.out.println("Phone Number: ");
+                String phone_number = scanner.nextLine();
+
+                medicalSystem.registerPatient(new Patient(
+                    0,
+                    first_name,
+                    last_name,
+                    date_of_birth, 
+                    age, 
+                    gender, 
+                    phone_number
+                ));
+                // medicalSystem.registerPatient(...);
                 break;
 
             case 2:
-                searchPatient();
+                System.out.println("1: Search by Name \n 2: Search by Id");
+                System.out.println("\nChoice: ");
+                int choice2 = scanner.nextInt();
+                scanner.nextLine();
+
+                if(choice2 == 1){
+                    System.out.println("First Name: ");
+                    String firstName = scanner.nextLine();
+
+                    System.out.println("Last Name: ");
+                    String lastName = scanner.nextLine();
+
+                    try{
+                        Patient tempPatient = medicalSystem.searchPatientByName(firstName, lastName);
+                        System.out.println(tempPatient.getInfo());
+                    }
+                    catch(PatientNotFoundException e){
+                        System.out.println("Patiant with the name: '" + firstName + " " + lastName + "'" + "not found");
+                        break;
+                    }
+
+
+                }
+                else if(choice2 == 2){
+                    System.out.println("1: Search by Name \n 2: Search by Id");
+                    System.out.println("\nChoice: ");
+                    int id = scanner.nextInt();
+
+                    try {
+                        Patient tempPatient = medicalSystem.searchPatientByID(id);
+                        System.out.println(tempPatient.getInfo());
+                    }
+                    catch(PatientNotFoundException e){
+                        System.out.println("Patiant with the id: '" + id + "'" + " not found");
+                        break;
+                    }
+
+                }
+                else{
+                    System.out.println("Please try again and pick 1 or 2");
+                }
+
                 break;
 
             case 3:
@@ -106,6 +176,11 @@ public class MedicalInterface {
                 break;
 
             case 4:
+                String output = medicalSystem.getStringOfAllPatients();
+                System.out.println(output);
+                break;
+            
+            case 5:
                 return;
 
             default:
@@ -160,7 +235,28 @@ public class MedicalInterface {
         switch (choice) {
 
             case 1:
-                addMedicalRecord();
+
+                MedicalRecord medicalRecord;
+
+                System.out.println("Id: ");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                
+                System.out.println("Diagnosis: ");
+                String diagnosis = scanner.nextLine();
+
+                System.out.println("Treatment Plan: ");
+                String treatment = scanner.nextLine();
+
+                System.out.println("Medication: ");
+                String medication = scanner.nextLine();
+
+                System.out.println("Notes: ");
+                String notes = scanner.nextLine();
+
+                medicalRecord = new MedicalRecord(diagnosis, treatment, medication, notes);
+
+                medicalSystem.addMedicalRecord(id,medicalRecord);
                 break;
 
             case 2:

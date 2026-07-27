@@ -1,3 +1,9 @@
+import java.io.*;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.Painter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -10,6 +16,7 @@ public class MedicalSystem {
 
     //we set up integerTracker to keep track of the next available ID for patients and appointments
     private int intergerTracker = 0;
+    
 
     // Collections to store application data
     private Hashtable<Integer, Patient> patients;
@@ -27,43 +34,44 @@ public class MedicalSystem {
                       PATIENT MANAGEMENT
        ===================================================== */
 
+    public String getStringOfAllPatients(){
+        String out = "\n";
+        for (int patientId : patients.keySet()) {
+            out += patientId + ":" + patients.get(patientId).getFirstName() + " " + patients.get(patientId).getLastName() + "\n";
+        }
+        return out;
+    }
+
     public boolean registerPatient(Patient patient) {
-        if (patient == null) {
-            return false;
-        }
+        intergerTracker++;
+        patient.Id = intergerTracker;
+        patients.put(intergerTracker, patient);
 
-        if (patients.containsKey(patient.getPatientID())) {
-            return false;
-        }
-
-        patients.put(patient.getPatientID(), patient);
-        return true;
+        System.out.println("Succesfully created patient with id: " + intergerTracker);
+        
+        return false;
     }
 
     public Patient searchPatientByID(int patientId) {
-        return patients.get(patientId);
+        Patient pTemp;
+        pTemp = patients.get(patientId);
+        if(pTemp == null){
+            throw new PatientNotFoundException();
+        }
+        return pTemp;
     }
 
-    public ArrayList<Patient> searchPatientByName(String name) {
-        ArrayList<Patient> matches = new ArrayList<>();
-
-        if (name == null || name.trim().isEmpty()) {
-            return matches;
-        }
-
-        String target = name.trim().toLowerCase();
-
+    public Patient searchPatientByName(String firstName, String lastName) {
+        Patient pTemp = null;
         for (Patient patient : patients.values()) {
-            String firstName = patient.getFirstName();
-            String lastName = patient.getLastName();
-
-            if (firstName != null && firstName.toLowerCase().contains(target)
-                    || lastName != null && lastName.toLowerCase().contains(target)) {
-                matches.add(patient);
+            if(patient.getFirstName() == firstName && patient.getLastName() == lastName){
+                pTemp = patient;
             }
         }
-
-        return matches;
+        if(pTemp == null){
+            throw new PatientNotFoundException();
+        }
+        return pTemp;
     }
 
     public boolean updatePatient(int patientId, Patient updatedPatient) {
@@ -82,12 +90,12 @@ public class MedicalSystem {
     }
 
     public boolean deletePatient(int patientId) {
-        if (patients.containsKey(patientId)) {
-            patients.remove(patientId);
-            return true;
+        Patient pTemp = patients.remove(patientId);
+        if(pTemp == null){
+            throw new PatientNotFoundException();
         }
-
-        return false;
+        // TODO: Implement after Patient.java is merged
+        return true;
     }
 
     /* =====================================================
@@ -158,28 +166,27 @@ public class MedicalSystem {
                   MEDICAL RECORD MANAGEMENT
        ===================================================== */
 
-    public boolean addMedicalRecord(MedicalRecord record) {
-        if (record == null || record.getPatientID() <= 0) {
+    public boolean addMedicalRecord(int patientId, MedicalRecord record) {
+        try {
+            searchPatientByID(patientId).addToRecord(record);
+        } 
+        catch (PatientNotFoundException e) {
+            System.out.println("Patient with the id: " + patientId + " was not found");
             return false;
         }
-
-        Patient patient = patients.get(record.getPatientID());
-        if (patient == null) {
-            return false;
-        }
-
-        patient.addToRecord(record);
         return true;
+     
     }
 
     public ArrayList<MedicalRecord> getMedicalRecords(int patientId) {
-        Patient patient = patients.get(patientId);
-
-        if (patient == null) {
-            return new ArrayList<>();
+        try {
+            return searchPatientByID(patientId).getMedicalRecords();
+        } 
+        catch (PatientNotFoundException e) {
+            System.out.println("Patient with the id: " + patientId + " was not found");
+            return null;
         }
-
-        return patient.getMedicalRecords();
+         
     }
 
     public boolean updateMedicalRecord(int patientId,
@@ -264,19 +271,113 @@ public class MedicalSystem {
        ===================================================== */
 
     public void saveData() {
-        try (BufferedWriter patientWriter = new BufferedWriter(new FileWriter("patients.txt"))) {
-            for (Patient patient : patients.values()) {
-                patientWriter.write(patient.getPatientID() + "|"
-                        + patient.getFirstName() + "|"
-                        + patient.getLastName() + "|"
-                        + patient.getAge() + "|"
-                        + patient.getGender() + "|"
-                        + patient.getPhone());
-                patientWriter.newLine();
+        // TODO: Save all collections to text files
+
+        //Patient Saving
+        
+        File patientsFile =  new File("patients.txt");
+
+        BufferedWriter bf = null;
+
+        try {
+            bf = new BufferedWriter(new FileWriter(patientsFile));
+
+            bf.write("" + intergerTracker);
+            bf.newLine();
+
+            for(Map.Entry<Integer, Patient> entry : patients.entrySet() ){
+
+                bf.write(entry.getKey() + ":" + entry.getValue());
+
+                bf.newLine();
             }
-        } catch (IOException e) {
-            System.out.println("Error saving patients: " + e.getMessage());
+
+            bf.flush();
+
         }
+        catch(IOException e){
+            System.out.println(e);
+        }
+        finally{
+            try{
+                if(bf!=null){
+                    bf.close();
+                }
+            }
+            catch(Exception e){
+                System.out.println(e);
+            }
+        }
+
+    }
+
+    public void loadData() {
+        // TODO: Load all collections from text files
+
+        //Load Patient Data
+        File patientsFile =  new File("patients.txt");
+
+        BufferedReader bf = null;
+
+
+        try {
+
+
+            bf = new BufferedReader(new FileReader(patientsFile));  
+
+            String top = bf.readLine();
+            intergerTracker = Integer.parseInt(top);
+
+            while(bf.ready()){
+                String line = bf.readLine();
+
+                if(line == null){
+                    continue;
+                }
+
+                String[] keyValue = line.split(":",2);
+
+                int key = Integer.parseInt(keyValue[0]);
+
+                String[] patiantValues = keyValue[1].split(",",7);
+
+                Patient tempPatient = new Patient(key, patiantValues[0], 
+                    patiantValues[1], 
+                    patiantValues[2], 
+                    Integer.parseInt(patiantValues[3]), 
+                    patiantValues[4], 
+                    patiantValues[5]);
+                
+                Pattern pattern = Pattern.compile("\\{([^}]*)\\}");
+                Matcher matcher = pattern.matcher(line);
+      
+                while(matcher.find()){
+                    String[] recordInfo = matcher.group(1).split(",");
+
+                    tempPatient.addToRecord(new MedicalRecord(recordInfo[0],recordInfo[1],recordInfo[2],recordInfo[3]));
+                }
+                
+      
+
+                patients.put(key, tempPatient);                
+                
+            }
+
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+        finally{
+            try{
+                if(bf!=null){
+                    bf.close();
+                }
+            }
+            catch(Exception e){
+                System.out.println(e);
+            }
+        }
+
 
         try (BufferedWriter appointmentWriter = new BufferedWriter(new FileWriter("appointments.txt"))) {
             for (Appointment appointment : appointments) {
@@ -310,26 +411,6 @@ public class MedicalSystem {
     public void loadData() {
         patients.clear();
         appointments.clear();
-
-        try (BufferedReader patientReader = new BufferedReader(new FileReader("patients.txt"))) {
-            String line;
-            while ((line = patientReader.readLine()) != null) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-
-                String[] fields = line.split("\\|", -1);
-                if (fields.length < 6) {
-                    continue;
-                }
-
-                int patientId = Integer.parseInt(fields[0]);
-                Patient patient = new Patient(patientId, fields[1], fields[2], "", Integer.parseInt(fields[3]), fields[4], fields[5]);
-                patients.put(patientId, patient);
-            }
-        } catch (IOException e) {
-            System.out.println("Error loading patients: " + e.getMessage());
-        }
 
         try (BufferedReader appointmentReader = new BufferedReader(new FileReader("appointments.txt"))) {
             String line;
@@ -387,3 +468,4 @@ public class MedicalSystem {
     }
 
 }
+
