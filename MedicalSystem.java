@@ -4,13 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.Painter;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
 
 public class MedicalSystem {
 
@@ -309,9 +302,25 @@ public class MedicalSystem {
             }
         }
 
+        
+        try (BufferedWriter appointmentWriter = new BufferedWriter(new FileWriter("appointments.txt"))) {
+            for (Appointment appointment : appointments) {
+                appointmentWriter.write(appointment.getAppointmentID() + "|"
+                        + appointment.getPatientID() + "|"
+                        + appointment.getDoctor() + "|"
+                        + appointment.getDate() + "|"
+                        + appointment.getTime());
+                appointmentWriter.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving appointments: " + e.getMessage());
+        }
+
     }
 
     public void loadData() {
+        patients.clear();
+        appointments.clear();
         // TODO: Load all collections from text files
 
         //Load Patient Data
@@ -378,40 +387,6 @@ public class MedicalSystem {
             }
         }
 
-
-        try (BufferedWriter appointmentWriter = new BufferedWriter(new FileWriter("appointments.txt"))) {
-            for (Appointment appointment : appointments) {
-                appointmentWriter.write(appointment.getAppointmentID() + "|"
-                        + appointment.getPatientID() + "|"
-                        + appointment.getDoctor() + "|"
-                        + appointment.getDate() + "|"
-                        + appointment.getTime());
-                appointmentWriter.newLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Error saving appointments: " + e.getMessage());
-        }
-
-        try (BufferedWriter recordWriter = new BufferedWriter(new FileWriter("records.txt"))) {
-            for (Patient patient : patients.values()) {
-                for (MedicalRecord record : patient.getMedicalRecords()) {
-                    recordWriter.write(patient.getPatientID() + "|"
-                            + record.getDiagnosis() + "|"
-                            + record.getTreatment() + "|"
-                            + record.getMedication() + "|"
-                            + record.getNotes());
-                    recordWriter.newLine();
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error saving records: " + e.getMessage());
-        }
-    }
-
-    public void loadData() {
-        patients.clear();
-        appointments.clear();
-
         try (BufferedReader appointmentReader = new BufferedReader(new FileReader("appointments.txt"))) {
             String line;
             while ((line = appointmentReader.readLine()) != null) {
@@ -431,28 +406,7 @@ public class MedicalSystem {
             System.out.println("Error loading appointments: " + e.getMessage());
         }
 
-        try (BufferedReader recordReader = new BufferedReader(new FileReader("records.txt"))) {
-            String line;
-            while ((line = recordReader.readLine()) != null) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
 
-                String[] fields = line.split("\\|", -1);
-                if (fields.length < 5) {
-                    continue;
-                }
-
-                int patientId = Integer.parseInt(fields[0]);
-                Patient patient = patients.get(patientId);
-                if (patient != null) {
-                    MedicalRecord record = new MedicalRecord(patientId, fields[1], fields[2], fields[3], fields[4]);
-                    patient.addToRecord(record);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error loading records: " + e.getMessage());
-        }
     }
 
     /* =====================================================

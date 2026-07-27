@@ -6,8 +6,7 @@ public class MedicalRecord {
     private String medication;
     private String notes;
 
-    public MedicalRecord(int patientID, String diagnosis, String treatment, String medication, String notes) {
-        this.patientID = patientID;
+    public MedicalRecord(String diagnosis, String treatment, String medication, String notes) {
         this.diagnosis = diagnosis;
         this.treatment = treatment;
         this.medication = medication;
@@ -55,7 +54,7 @@ public class MedicalRecord {
     }
 
     public String toString(){
-        return String.format("{%d,%s,%s,%s,%s}", patientID, diagnosis, treatment, medication, notes);
+        return String.format("{%s,%s,%s,%s}", diagnosis, treatment, medication, notes);
     }
 
     public String formatReadable(){
